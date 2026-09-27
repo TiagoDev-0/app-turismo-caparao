@@ -8,9 +8,6 @@ interface ResultadoUseLocalDetalhe {
   erro: string | null;
 }
 
-// Hook dedicado à tela de detalhes. Mantém a mesma guarda de segurança
-// que corrigiu o bug original (id ausente = mensagem clara, nunca
-// dispara /locais/undefined) e reage a mudanças de id.
 export function useLocalDetalhe(
   id: string | undefined
 ): ResultadoUseLocalDetalhe {
@@ -20,25 +17,34 @@ export function useLocalDetalhe(
 
   useEffect(() => {
     if (!id) {
-      setLocal(null);
       setErro("ID do local não foi informado na navegação.");
       setCarregando(false);
       return;
     }
 
+    const localId = id;
     let ativo = true;
 
     async function carregar() {
       setCarregando(true);
       setErro(null);
+
       try {
-        const dados = await buscarLocalPorId(id);
-        if (ativo) setLocal(dados);
+        const dados = await buscarLocalPorId(localId);
+
+        if (ativo) {
+          setLocal(dados);
+        }
       } catch (error) {
         console.log("Erro ao buscar local:", error);
-        if (ativo) setErro("Não foi possível carregar este local.");
+
+        if (ativo) {
+          setErro("Não foi possível carregar este local.");
+        }
       } finally {
-        if (ativo) setCarregando(false);
+        if (ativo) {
+          setCarregando(false);
+        }
       }
     }
 
@@ -49,5 +55,9 @@ export function useLocalDetalhe(
     };
   }, [id]);
 
-  return { local, carregando, erro };
+  return {
+    local,
+    carregando,
+    erro,
+  };
 }
