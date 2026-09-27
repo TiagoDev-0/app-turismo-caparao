@@ -20,6 +20,7 @@ export function useLocalDetalhe(
 
   useEffect(() => {
     if (!id) {
+      setLocal(null);
       setErro("ID do local não foi informado na navegação.");
       setCarregando(false);
       return;

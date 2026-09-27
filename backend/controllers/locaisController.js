@@ -1,10 +1,17 @@
-// Camada HTTP (controllers): interpreta req/res e delega toda a lógica
-// de dados para o service. O controller não sabe escrever SQL.
-const locaisService = require("../services/locaisService");
 
-async function listarTodos(req, res) {
-  const { categoria_id: categoriaId } = req.query;
+const locaisService = require("../services/locaisService");
+async function listarTodos(req, res, categoriaIdRota) {
+  const categoriaId =
+    typeof categoriaIdRota === "number"
+      ? categoriaIdRota
+      : req.query.categoria_id;
+
+  console.log("categoriaId final:", categoriaId);
+
   const locais = await locaisService.listar({ categoriaId });
+
+  console.log("quantidade de locais:", locais.length);
+
   res.json(locais);
 }
 

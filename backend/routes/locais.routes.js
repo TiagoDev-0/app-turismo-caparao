@@ -19,12 +19,11 @@ router.get("/", asyncHandler(controller.listarTodos));
 // /locais/restaurantes, /locais/hospedagens a partir de constants/categorias.js
 Object.entries(CATEGORIAS).forEach(([nomeRota, categoriaId]) => {
   router.get(
-    `/${nomeRota}`,
-    asyncHandler(async (req, res) => {
-      req.query.categoria_id = categoriaId;
-      await controller.listarTodos(req, res);
-    })
-  );
+  `/${nomeRota}`,
+  asyncHandler(async (req, res) => {
+    await controller.listarTodos(req, res, categoriaId);
+  })
+);
 });
 
 // GET /locais/:id -> detalhes de um local específico (fica por último)

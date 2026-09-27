@@ -6,6 +6,7 @@ const db = require("../config/db");
 // CLI de administração) sem depender de HTTP.
 
 async function listar({ categoriaId } = {}) {
+    console.log("categoriaId recebido:", categoriaId);
   let sql = `
     SELECT locais.*, categorias.nome AS categoria_nome
     FROM locais
